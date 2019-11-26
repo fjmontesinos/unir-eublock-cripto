@@ -1,4 +1,4 @@
-from hashes_unir import HashType, CryptoUNIR
+from crypto_unir import HashType, CryptoUNIR
 
 crypto = CryptoUNIR()
 

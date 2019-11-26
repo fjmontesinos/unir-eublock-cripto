@@ -1,6 +1,7 @@
 # imports necesarios
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding, dsa, ec
 
 from enum import Enum
 
@@ -27,7 +28,6 @@ class CryptoUNIR:
             print(f"Tipo de hash no contemplado: {hashType}")
             return
 
-
         digest = hashes.Hash(algorithm=algorithm, backend=default_backend())
 
         # Establecer el mensaje para calcular el hash deseado
@@ -37,6 +37,7 @@ class CryptoUNIR:
         else:
             mensajeB = mensaje
             mensajePlano = mensaje.decode()
+
         digest.update(mensajeB)
 
         # calcular el hash 
@@ -49,3 +50,29 @@ class CryptoUNIR:
             print(f"El Hash {hashType.name} de: \n{mensajePlano}\nes: \n{mensajeHashHex}")
         
         return mensajeHashHex
+    
+    # Funcionalidad de Firma
+    def generarClaveRSA(self):
+        return rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
+
+    def firmarConRSA(self, privateKey, content):
+        return privateKey.sign(
+            content,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+                ),
+                hashes.SHA256()
+        )
+
+    def generarClaveDSA(self):
+        return dsa.generate_private_key(key_size=2048, backend=default_backend())
+
+    def firmarConDSA(self, privateKey, content):
+        return privateKey.sign(content, hashes.SHA256())
+
+    def generarClaveECDSA(self):
+        return ec.generate_private_key(curve=ec.SECP256K1, backend=default_backend())
+
+    def firmarConECDSA(self, privateKey, content):
+        return privateKey.sign(content, ec.ECDSA(hashes.SHA256()))
