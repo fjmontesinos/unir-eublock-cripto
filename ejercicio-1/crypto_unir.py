@@ -12,12 +12,14 @@ class HashType(Enum):
 
 class CryptoUNIR:
     # función que dada la ruta de un fichero retorna el contenido como bytes
+    # ..........................................................................................
     def fileAsBytes(self, ruta):
         file = open(ruta, 'rb')
         with file:
             return file.read()
 
     # función que calcula el hash MD5 de una cadena e imprime resultado por pantalla
+    # ..........................................................................................
     def calcularHash(self, hashType, mensaje , debug):  
         # Instanciar el tipo de hash MD5
         if(hashType == HashType.MD5):
@@ -50,8 +52,10 @@ class CryptoUNIR:
             print(f"El Hash {hashType.name} de: \n{mensajePlano}\nes: \n{mensajeHashHex}")
         
         return mensajeHashHex
+        
     
-    # Funcionalidad de Firma
+    # Funcionalidad de Firma RSA, DSA y ECDSA
+    # ..........................................................................................
     def generarClaveRSA(self):
         return rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
 

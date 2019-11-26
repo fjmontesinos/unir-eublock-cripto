@@ -1,6 +1,7 @@
 from crypto_unir import HashType, CryptoUNIR
+import os
 
-path = '/home/javier/UNIR-Blockchain/01-Introducción Blockchain/actividad-python/ejercicio-1/'
+path = os.path.dirname(__file__) + "/"
 fileName = 'TransaccionBitcoin.txt'
 
 crypto = CryptoUNIR()

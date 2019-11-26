@@ -1,9 +1,10 @@
 from crypto_unir import CryptoUNIR
+import os
 
 crypto = CryptoUNIR()
 
 # Leer el contenido del fichero
-path = '/home/javier/UNIR-Blockchain/01-Introducción Blockchain/actividad-python/ejercicio-1/'
+path = os.path.dirname(__file__) + "/"
 fileName = 'TransaccionBitcoin.txt'
 fileContent = crypto.fileAsBytes(path + fileName)
 
