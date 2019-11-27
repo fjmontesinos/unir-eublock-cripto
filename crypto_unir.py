@@ -15,8 +15,9 @@ class CryptoUNIR:
     # ..........................................................................................
     def fileAsBytes(self, ruta):
         file = open(ruta, 'rb')
-        with file:
-            return file.read()
+        contenido = file.read()
+        file.close()
+        return contenido
 
     # función que calcula el hash MD5 de una cadena e imprime resultado por pantalla
     # ..........................................................................................
