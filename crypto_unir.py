@@ -2,6 +2,7 @@
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import rsa, padding, dsa, ec
+from cryptography.exceptions import InvalidSignature
 
 from enum import Enum
 
@@ -60,24 +61,59 @@ class CryptoUNIR:
     def generarClaveRSA(self):
         return rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
 
-    def firmarConRSA(self, privateKey, content):
+    def firmarConRSA(self, privateKey, contenido):
         return privateKey.sign(
-            content,
+            contenido,
             padding.PSS(
                 mgf=padding.MGF1(hashes.SHA256()),
                 salt_length=padding.PSS.MAX_LENGTH
                 ),
                 hashes.SHA256()
         )
+    
+    def verificarFirmaRSA(self, publicKey, contenido, firma):
+        try:
+            publicKey.verify(
+                firma,
+                contenido,
+                padding.PSS(
+                    mgf=padding.MGF1(hashes.SHA256()),
+                    salt_length=padding.PSS.MAX_LENGTH
+                    ),
+                hashes.SHA256()
+            )
+
+            return True
+
+        except InvalidSignature:
+            return False
 
     def generarClaveDSA(self):
         return dsa.generate_private_key(key_size=2048, backend=default_backend())
 
-    def firmarConDSA(self, privateKey, content):
-        return privateKey.sign(content, hashes.SHA256())
+    def firmarConDSA(self, privateKey, contenido):
+        return privateKey.sign(contenido, hashes.SHA256())
+
+    def verificarFirmaDSA(self, publicKey, contenido, firma):
+        try:
+            publicKey.verify(firma, contenido, hashes.SHA256())
+
+            return True
+
+        except InvalidSignature:
+            return False
 
     def generarClaveECDSA(self):
         return ec.generate_private_key(curve=ec.SECP256K1, backend=default_backend())
 
-    def firmarConECDSA(self, privateKey, content):
-        return privateKey.sign(content, ec.ECDSA(hashes.SHA256()))
+    def firmarConECDSA(self, privateKey, contenido):
+        return privateKey.sign(contenido, ec.ECDSA(hashes.SHA256()))
+
+    def verificarFirmaECDSA(self, publicKey, contenido, firma):
+        try:
+            publicKey.verify(firma, contenido, ec.ECDSA(hashes.SHA256()))
+
+            return True
+
+        except InvalidSignature:
+            return False
