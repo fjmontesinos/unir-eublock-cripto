@@ -36,7 +36,7 @@ signatureDSA = crypto.firmarConDSA(privateDSAKey, fileContent)
 
 
 from cryptography.hazmat.primitives.asymmetric import utils
-print('Firma DSA: ', utils.decode_dss_signature(signatureDSA))
+print('Firma DSA  : ', utils.decode_dss_signature(signatureDSA))
 
 if(crypto.verificarFirmaDSA(publicDSAKey, fileContent, signatureDSA) == True):
     print("Firma DSA valida del contenido")

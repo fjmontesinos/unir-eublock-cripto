@@ -104,7 +104,7 @@ class CryptoUNIR:
             return False
 
     def generarClaveECDSA(self):
-        return ec.generate_private_key(curve=ec.SECP256K1, backend=default_backend())
+        return ec.generate_private_key(curve=ec.SECP256K1(), backend=default_backend())
 
     def firmarConECDSA(self, privateKey, contenido):
         return privateKey.sign(contenido, ec.ECDSA(hashes.SHA256()))
