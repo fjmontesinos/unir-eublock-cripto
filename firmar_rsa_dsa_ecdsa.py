@@ -33,7 +33,10 @@ publicDSAKey = privateDSAKey.public_key()
 
 # Firmar con RSA y mostrar por consola
 signatureDSA = crypto.firmarConDSA(privateDSAKey, fileContent)
-print(f'Firma DSA:\n{signatureDSA.hex()}')
+
+
+from cryptography.hazmat.primitives.asymmetric import utils
+print('Firma DSA: ', utils.decode_dss_signature(signatureDSA))
 
 if(crypto.verificarFirmaDSA(publicDSAKey, fileContent, signatureDSA) == True):
     print("Firma DSA valida del contenido")
@@ -50,7 +53,7 @@ publicECDSAKey = privateECDSAKey.public_key()
 
 # Firmar con ECRSA y mostrar por consola
 signatureECDSA = crypto.firmarConECDSA(privateECDSAKey, fileContent)
-print(f'Firma ECDSA:\n{signatureECDSA.hex()}')
+print('Firma ECDSA: ', utils.decode_dss_signature(signatureECDSA))
 
 if(crypto.verificarFirmaECDSA(publicECDSAKey, fileContent, signatureECDSA) == True):
     print("Firma ECDSA valida del contenido")
